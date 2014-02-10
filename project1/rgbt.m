@@ -7,9 +7,10 @@ g=rgb(:,:,2);
 b=rgb(:,:,3);
 z = zeros(size(rgb, 1), size(rgb, 2));
 
-red_comp = cat(3, r, a, a);
-green_comp = cat(3, a, g, a);
-blue_comp = cat(3, a, a, b);
+red_comp = cat(3, r, z, z);
+green_comp = cat(3, z, g, z);
+blue_comp = cat(3, z, z, b);
+    
 
 subplot(2,2,1)
 imshow(rgb)
