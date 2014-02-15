@@ -104,8 +104,13 @@ reshape(MSE, [1,3])
 % components for 4:2:0 approach. Please note that you do not send the pixels
 % which are made zero in the row and columns during subsampling. (5 points)
 
+before = size(y) + size(cb) +size(cr);
 
+cb420= cb(2:2:end-1, 2:2:end-1);
+cr420= cr(2:2:end-1, 2:2:end-1);
+after = size(y) + size(cb420) + size(cr420);
 
+CR=before/after
 
 
 
