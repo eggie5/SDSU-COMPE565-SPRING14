@@ -1,6 +1,6 @@
 
 rgb=imread('SunView.jpg');
-[height,width,depth]=size(rgb)
+[height,width,depth]=size(rgb);
 
 ycbcr=rgb2ycbcr(rgb);
 
@@ -18,7 +18,7 @@ cr_22 = cr(:, 1:2:end);
 cb_20=cb(1:2:end, 1:2:end);
 cr_20=cr(1:2:end, 1:2:end);
 
-figure(1);
+figure(3);
 subplot(1,2,1);
 imshow(cb_20);
 title('4:2:0 cb band');
@@ -31,18 +31,18 @@ title('4:2:0 cr band');
 
 %6. Upsample and display the Cb and Cr bands using: (15 points)
 %6.1. Linear interpolation
-figure(2);
+figure(4);
 subplot(2,2,1);
 imshow(rgb);
 title('orig');
 
-
-cb_20_lin = cb;
 %pixel n = (n-1 + n+1)/2
+cb_20_lin = cb;
 cb_20_lin(2:2:end-1, 2:2:end-1) = (cb_20_lin(1:2:end-3, 1:2:end-3) + cb_20_lin(3:2:end-1, 3:2:end-1))/2;
 
 cr_20_lin=cr;
 cr_20_lin(2:2:end-1, 2:2:end-1) = (cr_20_lin(1:2:end-3, 1:2:end-3) + cr_20_lin(3:2:end-1, 3:2:end-1))/2;
+
 upscaled_lin=cat(3, y, cb_20_lin, cr_20_lin);
 
 
@@ -91,26 +91,32 @@ dy=y1-y2;
 dcb=cb1-cb2;
 dcr=cr1-cr2;
 
-msey =  mean(dy(:).^2)
-msecb = mean(dcb(:).^2)
-msecr = mean(dcr(:).^2)
+msey =  mean(dy(:).^2);
+msecb = mean(dcb(:).^2);
+msecr = mean(dcr(:).^2);
 
 %convert uint8s to doubles for maths
 MSE = mean(mean((double(ycbcr) - double(upscaled_lin)).^2,2),1);
-reshape(MSE, [1,3])
+reshape(MSE, [1,3]);
+
+fprintf('y-band MSE: %f\n', MSE(1));
+fprintf('cb-band MSE: %f\n', MSE(2));
+fprintf('cr-band MSE: %f\n', MSE(3));
 
 
 % 11. Comment on the compression ratio achieved by subsampling Cb and Cr
 % components for 4:2:0 approach. Please note that you do not send the pixels
 % which are made zero in the row and columns during subsampling. (5 points)
 
-before = size(y) + size(cb) +size(cr);
+before = size(y) + size(cb) +size(cr)
 
 cb420= cb(2:2:end-1, 2:2:end-1);
 cr420= cr(2:2:end-1, 2:2:end-1);
-after = size(y) + size(cb420) + size(cr420);
+after = size(y) + size(cb420) + size(cr420)
 
-CR=before/after
+CR=before/after;
+
+fprintf('The compression ratio is: %f\n', CR);
 
 
 

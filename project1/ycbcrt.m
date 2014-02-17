@@ -1,7 +1,7 @@
 
 
 rgb=imread('SunView.jpg');
-[height,width,depth]=size(rgb)
+[height,width,depth]=size(rgb);
 
 ycbcr=rgb2ycbcr(rgb);
 
@@ -16,7 +16,7 @@ cr=ycbcr(:,:,3);
 
 
 
-figure(1);
+figure(2);
 
 
 subplot(2,2,1);

@@ -11,7 +11,7 @@ red_comp = cat(3, r, z, z);
 green_comp = cat(3, z, g, z);
 blue_comp = cat(3, z, z, b);
     
-
+figure(1);
 subplot(2,2,1)
 imshow(rgb)
 subplot(2,2,2)
