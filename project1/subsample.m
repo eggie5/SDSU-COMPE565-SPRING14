@@ -4,7 +4,7 @@ rgb=imread('SunView.jpg');
 
 ycbcr=rgb2ycbcr(rgb);
 
-y=ycbcr(:,:,1); %luminance part of the ycbcr image
+y= ycbcr(:,:,1); %luminance part of the ycbcr image
 cb=ycbcr(:,:,2);
 cr=ycbcr(:,:,3);
 
@@ -14,7 +14,7 @@ cr=ycbcr(:,:,3);
 cb_22 = cb(:, 1:2:end);
 cr_22 = cr(:, 1:2:end);
 
-%4:2:0 subsample cb w/o replacement, reduces x pixes by half
+%4:2:0 subsample cb w/o replacement, reduces x & y pixels by half
 cb_20=cb(1:2:end, 1:2:end);
 cr_20=cr(1:2:end, 1:2:end);
 
@@ -36,14 +36,20 @@ subplot(2,2,1);
 imshow(rgb);
 title('orig');
 
+
 %pixel n = (n-1 + n+1)/2
-cb_20_lin = cb;
-cb_20_lin(2:2:end-1, 2:2:end-1) = (cb_20_lin(1:2:end-3, 1:2:end-3) + cb_20_lin(3:2:end-1, 3:2:end-1))/2;
+cb20lin = cb;
+cbdiff=cb20lin(1:2:end, 1:2:end) + [cb20lin(1:2:end, 3:2:end) cb20lin(1:2:end,end)]; %padds extra column
+cb20lin(1:2:end, 2:2:end) = (cbdiff)/2;
+cb20lin(2:2:end,:) = (cb20lin(1:2:end,:) + [cb20lin(3:2:end,:); cb20lin(end, :)])/2; %pads extra row
+
 
 cr_20_lin=cr;
-cr_20_lin(2:2:end-1, 2:2:end-1) = (cr_20_lin(1:2:end-3, 1:2:end-3) + cr_20_lin(3:2:end-1, 3:2:end-1))/2;
+cbdiff=cr_20_lin(1:2:end, 1:2:end) + [cr_20_lin(1:2:end, 3:2:end) cr_20_lin(1:2:end,end)]; %padds extra column
+cr_20_lin(1:2:end, 2:2:end) = (cbdiff)/2;
+cr_20_lin(2:2:end,:) = (cr_20_lin(1:2:end,:) + [cr_20_lin(3:2:end,:); cr_20_lin(end, :)])/2; %pads extra row
 
-upscaled_lin=cat(3, y, cb_20_lin, cr_20_lin);
+upscaled_lin=cat(3, y, cb20lin, cr_20_lin);
 
 
 subplot(2,2,2);
@@ -79,25 +85,25 @@ title('pixel replcement');
 % (obtained using linear interpolation only). Comment on the results. (10 points)
 % mse= 1/(n*m) sum(sum( f(j,k) - f2(j,k) ))
 
-y1= ycbcr(:,:,1);
-cb1=ycbcr(:,:,2);
-cr1=ycbcr(:,:,3);
+y1= y;
+cb1=cb;
+cr1=cr;
 
 y2=upscaled_lin(:,:,1);
-cb2=upscaled_lin(:,:,2);
-cr2=upscaled_lin(:,:,3);
+cb2=cb20lin;%upscaled_lin(:,:,2);
+cr2=cr_20_lin;%upscaled_lin(:,:,3);
 
-dy=y1-y2;
-dcb=cb1-cb2;
-dcr=cr1-cr2;
+dy=double(y1-y2);
+dcb=double(cb1-cb2);
+dcr=double(cr1-cr2);
 
 msey =  mean(dy(:).^2);
 msecb = mean(dcb(:).^2);
-msecr = mean(dcr(:).^2);
+msecr = mean(dcr(:) );
 
-%convert uint8s to doubles for maths
-MSE = mean(mean((double(ycbcr) - double(upscaled_lin)).^2,2),1);
-reshape(MSE, [1,3]);
+MSE=[msey msecb msecr];
+MSE=reshape(MSE, [1,3]);
+
 
 fprintf('y-band MSE: %f\n', MSE(1));
 fprintf('cb-band MSE: %f\n', MSE(2));
@@ -108,11 +114,11 @@ fprintf('cr-band MSE: %f\n', MSE(3));
 % components for 4:2:0 approach. Please note that you do not send the pixels
 % which are made zero in the row and columns during subsampling. (5 points)
 
-before = size(y) + size(cb) +size(cr)
+before = size(y,1)*size(y,2)*3;
 
-cb420= cb(2:2:end-1, 2:2:end-1);
-cr420= cr(2:2:end-1, 2:2:end-1);
-after = size(y) + size(cb420) + size(cr420)
+cb420= cb(2:2:end, 2:2:end);
+cr420= cr(2:2:end, 2:2:end);
+after = size(y,1)*size(y,2) +  size(cb420,1)*size(cb420,2) + size(cr420,1)*size(cr420,2);
 
 CR=before/after;
 
