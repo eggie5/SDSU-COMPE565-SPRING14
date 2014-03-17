@@ -1,8 +1,7 @@
 % CompE 565 Project 2
 % 3/14/2014
 % Name: Alex Egg
-% Id: 809236396
-% Email: eggie5@gmail.com
+
 
 clear 
 clc
