@@ -28,8 +28,8 @@ for i = 1:mbSize:row-mbSize+1
         % dx is col(horizontal) index
         % this means we are scanning in order
         
-        dy = motionVect(1,mbCount);
-        dx = motionVect(2,mbCount);
+        dy = uint8(motionVect(1,mbCount));
+        dx = uint8(motionVect(2,mbCount));
         refBlkVer = i + dy;
         refBlkHor = j + dx;
         imageComp(i:i+mbSize-1,j:j+mbSize-1) = imgI(refBlkVer:refBlkVer+mbSize-1, refBlkHor:refBlkHor+mbSize-1);
