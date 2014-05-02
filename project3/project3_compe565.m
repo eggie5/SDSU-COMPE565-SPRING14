@@ -1,11 +1,3 @@
-% Compe565 Project 3 
-% 11/18/2013
-% Name: Thomas Gerstenberg
-% Id: 812950041
-% Email: t_gerst6@yahoo.com
-% Name: Chad Higgins
-% Id: 814680068
-% Email: chiggins91@cox.net
 
 function project3_compe565(filepath)
 % params\ filepath: The string path of the file to use for this function
