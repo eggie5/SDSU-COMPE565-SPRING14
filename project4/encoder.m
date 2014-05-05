@@ -58,7 +58,8 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
             %3 step search
             [motion_vectors, ~, ~] = motionEstTSS(target_y ,ref_y, mbSize, initialStepSize);
             mvlbuff(:,:,f+1) = motion_vectors;
-            mvcbuff(:,:,f+1) = motion_vectors/2;
+            mvcbuff(:,:,f+1) = motion_vectors./2;
+            printMV('asfd', f+1, motion_vectors);
 
             %reconstrct y comp.
             mcomp_y = motionComp(ref_y, motion_vectors, mbSize);
@@ -71,7 +72,7 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
             m_compensated_cb_us = upsample(mcomp_cb);
             m_compenstaed_cr_us = upsample(mcomp_cr);
             
-            motion_compensated_ycbcr_us =cat(3, mcomp_y, m_compensated_cb_us, m_compenstaed_cr_us);
+            motion_compensated_ycbcr_us = cat(3, mcomp_y, m_compensated_cb_us, m_compenstaed_cr_us);
             
 
             % compute the diff of each P frame & original
