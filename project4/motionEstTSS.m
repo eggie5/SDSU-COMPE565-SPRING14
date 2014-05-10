@@ -1,16 +1,4 @@
-% Computes motion vectors using Three Step Search method
-%
-% Input
-%   imgP : The image for which we want to find motion vectors
-%   imgI : The reference image
-%   mbSize : Size of the macroblock
-%   p : Search parameter  (read literature to find what this means)
-%
-% Ouput
-%   motionVect : the motion vectors for each integral macroblock in imgP
-%   TSScomputations: The average number of points searched for a macroblock
-%
-% Written by Aroh Barjatya
+
 
 
 function [motionVect, TSScomputations, avg_mad] = motionEstTSS(imgP, imgI, mbSize, p)
@@ -19,6 +7,8 @@ function [motionVect, TSScomputations, avg_mad] = motionEstTSS(imgP, imgI, mbSiz
 
 vectors = zeros(2,row*col/mbSize^2);
 costs = ones(3, 3) * 65537;
+
+
 
 computations = 0;
 mins=[];

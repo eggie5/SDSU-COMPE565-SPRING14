@@ -40,8 +40,8 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
             
             dec_I = jpeg_decode(out_buff_y(:,:,1), out_buff_cb(:,:,1), out_buff_cr(:,:,1));
             
-            figure
-            imshow(ycbcr2rgb(uint8(dec_I)));
+            %figure
+            %imshow(ycbcr2rgb(uint8(dec_I)));
 
             
             %use this compressed I frame for motion estimation on the next
@@ -59,7 +59,7 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
             [motion_vectors, ~, ~] = motionEstTSS(target_y ,ref_y, mbSize, initialStepSize);
             mvlbuff(:,:,f+1) = motion_vectors;
             mvcbuff(:,:,f+1) = motion_vectors./2;
-            printMV('asfd', f+1, motion_vectors);
+            printMV('asfd', f, motion_vectors);
 
             %reconstrct y comp.
             mcomp_y = motionComp(ref_y, motion_vectors, mbSize);
@@ -77,13 +77,13 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
 
             % compute the diff of each P frame & original
             % After predicting frames using motion compensation, the coder finds the error (residual) which is then compressed and transmitted.
-            residual =  uint8(target) - uint8(motion_compensated_ycbcr_us);
+            residual =  target - (motion_compensated_ycbcr_us);
 
             
             %jpeg encode for transmittion
             [Q_Y Q_Cb Q_Cr] = jpeg_encode(residual);
             
-            %zig zag here
+      
             
             %add to output buffer
             out_buff_y(:,:,f+1)=Q_Y;
@@ -92,13 +92,11 @@ function [out_buff_y, out_buff_cb, out_buff_cr, mvlbuff, mvcbuff]=encoder(video_
 
             
             %embedded decoder
-            decoded_residue = jpeg_decode(out_buff_y(:,:,f+1), out_buff_cb(:,:,f+1), out_buff_cr(:,:,f+1));
-            decoded_frame = uint8(motion_compensated_ycbcr_us) + uint8(decoded_residue);
+            decoded_residue = predictRefImage(out_buff_y(:,:,f+1), out_buff_cb(:,:,f+1), out_buff_cr(:,:,f+1));
+            decoded_frame = (motion_compensated_ycbcr_us) + double(decoded_residue);
             
-            figure;
-            imshow(ycbcr2rgb(uint8(decoded_frame)));
-            
-            next_ref = decoded_frame;
+           
+            next_ref = Iframe;
             
         end
         

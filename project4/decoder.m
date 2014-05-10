@@ -8,6 +8,9 @@ for n=1:5
     
     if n==1
         %just pass I frame to output sink
+        ref_y = (y);
+        ref_cb =(cb);
+        ref_cr =(cr);
     else        
         %decode P frames 
         y = motion_comp_inv(ref_y, y, mv_y(:,:,n));
@@ -21,9 +24,7 @@ for n=1:5
     error = raw_frame-reconstructed;
     
     %set the next ref frame
-    ref_y = uint8(y);
-    ref_cb = uint8(cb);
-    ref_cr = uint8(cr);
+    
     
     figure();
     subplot(1,3,1),subimage(raw_frame), title(['Original Frame #', num2str(n)]);

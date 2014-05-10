@@ -1,10 +1,3 @@
-%upsamples an image%
-%Daniel Tarantino (813-25-2720)
-%Mohammad Iqbal (809-86-2450)
-%Agha Zain (815-07-1719)
-%Soroush Tamizi (817-35-2933)
-%COMPE 565 Fall 2013
-%Dr. Kumar
 
 function Image_Upsampled = upsample (Image)
 

@@ -1,11 +1,3 @@
-% Decodes the image for prediction
-%Daniel Tarantino (813-25-2720)
-%Mohammad Iqbal (809-86-2450)
-%Agha Zain (815-07-1719)
-%Soroush Tamizi (817-35-2933)
-%COMPE 565 Fall 2013
-%Dr. Kumar
-
 
 
 function I_YCbCr_US_LI = predictRefImage(Q_Y, Q_Cb, Q_Cr)

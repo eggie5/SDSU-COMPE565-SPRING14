@@ -1,14 +1,4 @@
-% Computes motion compensated image using the given motion vectors
-%
-% Input
-%   imgI : The reference image 
-%   motionVect : The motion vectors
-%   mbSize : Size of the macroblock
-%
-% Ouput
-%   imgComp : The motion compensated image
-%
-% Written by Aroh Barjatya
+
 
 function imgComp = motionComp(imgI, motionVect, mbSize)
 

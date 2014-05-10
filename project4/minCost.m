@@ -1,13 +1,4 @@
-% Finds the indices of the cell that holds the minimum cost
-%
-% Input
-%   costs : The matrix that contains the estimation costs for a macroblock
-%
-% Output
-%   dx : the motion vector component in columns
-%   dy : the motion vector component in rows
-%
-% Written by Aroh Barjatya
+
 
 function [dx, dy, min] = minCost(costs)
 
